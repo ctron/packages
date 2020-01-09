@@ -1,0 +1,154 @@
+image:
+  repository: "hawkbit/hawkbit-update-server"
+  tag: 0.3.0M5-mysql
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+## podDisruptionBudget configuration
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+## strategy used to replace old Pods by new ones
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+updateStrategy:
+  ## default is re-create, because of possible database migrations
+  type: Recreate
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+    # traefik.ingress.kubernetes.io/affinity: "true"
+
+livenessProbe:
+  initialDelaySeconds: 240
+  timeoutSeconds: 5
+readinessProbe:
+  initialDelaySeconds: 120
+  timeoutSeconds: 5
+
+useActuatorCheck: false
+
+ingress:
+  enabled: false
+  annotations: {}
+    # ingress.kubernetes.io/ssl-redirect: "true"
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: hawkbit-update-server.local
+      paths: []
+  tls: []
+  #  - secretName: hawkbit-tls
+  #    hosts:
+  #      - hawkbit-update-server.local
+
+# env vars for configuration
+env:
+  springDatasourceHost: "hawkbit-update-server-mysql"
+  springDatasourceDb: "hawkbit"
+  springRabbitmqHost: "hawkbit-update-server-rabbitmq"
+  springRabbitmqUsername: "hawkbit"
+  springRabbitmqPassword: "hawkbit"
+
+# optional env vars
+extraEnv: {}
+  # JAVA_TOOL_OPTIONS: "-Xms1024m -Xmx1024m"
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 500m
+  #  memory: 1536Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 1024Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podTemplate:
+  annotations: {}
+
+extraVolumes: []
+extraVolumeMounts: []
+
+configMap:
+  mountPath: "/opt/hawkbit/config"
+
+spring:
+  profiles: "mysql"
+
+config:
+  application:
+    hawkbit:
+      ## Configuration for the device management federation
+      ## ref: https://www.eclipse.org/hawkbit/apis/dmf_api/
+      dmf:
+        hono:
+          enabled: false
+          tenant-list-uri: "http://[DEVICE_REGISTRY_HOST]:8080/admin/tenants"
+          device-list-uri: "http://[DEVICE_REGISTRY_HOST]:8080/admin/$$tenantId/devices"
+          credentials-list-uri: "http://[DEVICE_REGISTRY_HOST]:8080/v1/credentials/$$tenantId/$$deviceId"
+          authentication-method: "oidc"
+          username: "[KEYCLOAK_HAWKBIT_USERNAME]"
+          oidc-token-uri: "http://[KEYCLOAK_HOST]:8080/auth/realms/master/protocol/openid-connect/token"
+          oidc-client-id: "[KEYCLOAK_DEVICE_REGISTRY_CLIENT_ID]"
+    spring:
+      cloud:
+        stream:
+          bindings:
+            default:
+              group: "hawkbit"
+            device-created:
+              destination: "device-registry.device-created"
+            device-updated:
+              destination: "device-registry.device-updated"
+            device-deleted:
+              destination: "device-registry.device-deleted"
+      security:
+        user:
+          name: admin
+  secrets:
+    hawkbit:
+      dmf:
+        hono:
+          password: "[KEYCLOAK_HAWKBIT_USER_PASSWORD]"
+    spring:
+      security:
+        user:
+          # the "{noop}" prefix is needed!
+          password: "{noop}admin"
+      datasource:
+        username: hawkbit
+        password: hawkbit
+
+
+# dependency charts config
+mysql:
+  enabled: true
+  mysqlUser: hawkbit
+  mysqlPassword: hawkbit
+  mysqlDatabase: hawkbit
+  metrics:
+    enabled: true
+
+rabbitmq:
+  enabled: true
+  volumePermissions:
+    enabled: true
+  rabbitmq:
+    username: hawkbit
+    password: hawkbit
+    metrics:
+      enabled: true

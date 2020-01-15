@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "hawkbit-update-server.fullname" . }}
+  name: {{ include "hawkbit.fullname" . }}
   labels:
-{{ include "hawkbit-update-server.labels" . | indent 4 }}
+{{ include "hawkbit.labels" . | indent 4 }}
   {{- with .Values.service.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -16,5 +16,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "hawkbit-update-server.name" . }}
+    app.kubernetes.io/name: {{ include "hawkbit.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

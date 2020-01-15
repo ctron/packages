@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hawkbit-update-server.fullname" . }}
+  name: {{ include "hawkbit.fullname" . }}
   labels:
-{{ include "hawkbit-update-server.labels" . | indent 4 }}
+{{ include "hawkbit.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
@@ -12,12 +12,12 @@ spec:
     {{- end }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "hawkbit-update-server.name" . }}
+      app.kubernetes.io/name: {{ include "hawkbit.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "hawkbit-update-server.name" . }}
+        app.kubernetes.io/name: {{ include "hawkbit.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
         checksum/config: {{ include (print .Template.BasePath "/secrets.yaml") . | sha256sum }}
@@ -43,7 +43,7 @@ spec:
             - name: "SPRING_APPLICATION_JSON"
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "hawkbit-update-server.fullname" . }}
+                  name: {{ include "hawkbit.fullname" . }}
                   key: "SPRING_APPLICATION_JSON"
             - name: "SPRING_RABBITMQ_HOST"
               value: "{{ if .Values.rabbitmq.enabled }}{{ .Release.Name }}-rabbitmq{{ else }}{{ .Values.env.springRabbitmqHost }}{{ end }}"
@@ -52,7 +52,7 @@ spec:
             - name: "SPRING_RABBITMQ_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: "{{ template "hawkbit-update-server.fullname" . }}-rabbitmq-pass"
+                  name: "{{ template "hawkbit.fullname" . }}-rabbitmq-pass"
                   key: "rabbitmq-pass"
             {{- range $key, $value := .Values.extraEnv }}
             - name: "{{ $key }}"
@@ -110,7 +110,7 @@ spec:
       volumes:
       - name: configmap
         configMap:
-          name: {{ include "hawkbit-update-server.fullname" . }}
+          name: {{ include "hawkbit.fullname" . }}
       {{- if .Values.extraVolumes }}
       {{ toYaml .Values.extraVolumes | nindent 6 }}
       {{- end }}

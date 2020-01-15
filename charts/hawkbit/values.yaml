@@ -1,3 +1,18 @@
+# Copyright (c) 2019 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License 2.0 which is available at
+# http://www.eclipse.org/legal/epl-2.0
+#
+# SPDX-License-Identifier: EPL-2.0
+---
+# Default values for hawkbit.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 image:
   repository: "hawkbit/hawkbit-update-server"
   tag: 0.3.0M5-mysql
@@ -40,18 +55,18 @@ ingress:
     # ingress.kubernetes.io/ssl-redirect: "true"
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: hawkbit-update-server.local
+    - host: hawkbit.local
       paths: []
   tls: []
   #  - secretName: hawkbit-tls
   #    hosts:
-  #      - hawkbit-update-server.local
+  #      - hawkbit.local
 
 # env vars for configuration
 env:
-  springDatasourceHost: "hawkbit-update-server-mysql"
+  springDatasourceHost: "hawkbit-mysql"
   springDatasourceDb: "hawkbit"
-  springRabbitmqHost: "hawkbit-update-server-rabbitmq"
+  springRabbitmqHost: "hawkbit-rabbitmq"
   springRabbitmqUsername: "hawkbit"
   springRabbitmqPassword: "hawkbit"
 
@@ -134,17 +149,29 @@ config:
         password: hawkbit
 
 
-# dependency charts config
+## dependency charts config
+## ref: https://github.com/bitnami/charts/blob/master/bitnami/mysql/values.yaml
 mysql:
   enabled: true
-  mysqlUser: hawkbit
-  mysqlPassword: hawkbit
-  mysqlDatabase: hawkbit
+  master:
+    persistence:
+      enabled: false
+  volumePermissions:
+    enabled: false
+  db:
+    user: hawkbit
+    password: hawkbit
+    name: hawkbit
+  replication:
+    enabled: false
   metrics:
     enabled: true
 
+## ref: https://github.com/bitnami/charts/blob/master/upstreamed/rabbitmq/values.yaml
 rabbitmq:
   enabled: true
+  persistence:
+    enabled: false
   volumePermissions:
     enabled: true
   rabbitmq:

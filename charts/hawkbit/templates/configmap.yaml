@@ -1,9 +1,9 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ include "hawkbit-update-server.fullname" . }}
+  name: {{ include "hawkbit.fullname" . }}
   labels:
-{{ include "hawkbit-update-server.labels" . | indent 4 }}  
+{{ include "hawkbit.labels" . | indent 4 }}  
 data:
   application.yaml: |-
 {{ toYaml .Values.config.application | indent 4}}

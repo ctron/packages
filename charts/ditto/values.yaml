@@ -669,4 +669,4 @@ mongodb:
   securityContext:
     enabled: false
   persistence:
-    enabled: false
+    enabled: true

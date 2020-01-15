@@ -65,10 +65,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Create kind cluster
-        uses: helm/kind-action@master
+        #uses: helm/kind-action@master
+        uses: monotek/kind-action@kind070
         with:
           config: .github/kind-config.yaml
-          installLocalPathProvisioner: true
+          #installLocalPathProvisioner: true
           node-image: ${{ matrix.k8s }}
       - name: Run chart-testing (install)
         uses: helm/chart-testing-action@master

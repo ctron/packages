@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: EPL-2.0
 
-helm-extra-args: --timeout 7200
+helm-extra-args: --timeout 900
 check-version-increment: true
 debug: true
 chart-repos:

@@ -155,7 +155,7 @@ mysql:
   enabled: true
   master:
     persistence:
-      enabled: true
+      enabled: false
   volumePermissions:
     enabled: false
   db:
@@ -171,7 +171,7 @@ mysql:
 rabbitmq:
   enabled: true
   persistence:
-    enabled: true
+    enabled: false
   volumePermissions:
     enabled: true
   rabbitmq:

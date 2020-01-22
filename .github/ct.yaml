@@ -9,7 +9,6 @@
 #
 # SPDX-License-Identifier: EPL-2.0
 
-# consider helm install to be failed after 10 minutes
 helm-extra-args: --timeout 600
 check-version-increment: true
 debug: true

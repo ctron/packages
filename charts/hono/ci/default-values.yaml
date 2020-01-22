@@ -1,0 +1,22 @@
+amqpMessagingNetworkExample:
+  dispatchRouter:
+    svc:
+      type: NodePort
+
+jaegerBackendExample:
+  svc:
+    type: NodePort
+
+deviceRegistryExample:
+  svc:
+    type: NodePort
+
+adapters:
+
+  http:
+    svc:
+      type: NodePort
+
+  mqtt:
+    svc:
+      type: NodePort

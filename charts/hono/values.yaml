@@ -32,9 +32,9 @@ amqpMessagingNetworkExample:
         amqp: 30672
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
   # AMQP Messaging Network Broker configuration.
   broker:
@@ -77,9 +77,9 @@ jaegerBackendExample:
       http: 36686
 
     # serviceType defines the type which the created service will have.
-    # The default is "NodePort".
+    # The default is "LoadBalancer".
     # Note: This property will be ignored when deploying to platform "openshift".
-    type: NodePort
+    type: LoadBalancer
 
 # jaegerAgentImage contains the name (including tag)
 # of the container image to use for the Jaeger Agent sidecar deployed
@@ -190,9 +190,9 @@ adapters:
         amqp: 32672
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
     # extraSecretMounts describes additional secrets that should be mounted into the
     # adapter's container filesystem. The files from the secret(s) can
@@ -256,9 +256,9 @@ adapters:
         coaps: 30684
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
     # extraSecretMounts describes additional secrets that should be mounted into the
     # adapter's container filesystem. The files from the secret(s) can
@@ -309,9 +309,9 @@ adapters:
         https: 30443
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
     # extraSecretMounts describes additional secrets that should be mounted into the
     # adapter's container filesystem. The files from the secret(s) can
@@ -373,9 +373,9 @@ adapters:
         https: 32443
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
     # extraSecretMounts describes additional secrets that should be mounted into the
     # adapter's container filesystem. The files from the secret(s) can
@@ -434,9 +434,9 @@ adapters:
         mqtts: 30883
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
     # extraSecretMounts describes additional secrets that should be mounted into the
     # adapter's container filesystem. The files from the secret(s) can
@@ -497,9 +497,9 @@ adapters:
         mqtts: 30884
 
       # serviceType defines the type which the created service will have.
-      # The default is "NodePort".
+      # The default is "LoadBalancer".
       # Note: This property will be ignored when deploying to platform "openshift".
-      type: NodePort
+      type: LoadBalancer
 
     # extraSecretMounts describes additional secrets that should be mounted into the
     # adapter's container filesystem. The files from the secret(s) can
@@ -636,9 +636,9 @@ deviceRegistryExample:
       https: 31443
 
     # serviceType defines the type which the created service will have.
-    # The default is "NodePort".
+    # The default is "LoadBalancer".
     # Note: This property will be ignored when deploying to platform "openshift".
-    type: NodePort
+    type: LoadBalancer
 
   # extraSecretMounts describes additional secrets that should be mounted into the
   # Device Registry's' container filesystem. The files from the secret(s) can

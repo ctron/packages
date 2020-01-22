@@ -36,8 +36,6 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "{{ .Values.spring.profiles }}"
-            - name: MANAGEMENT_SERVER_PORT
-              value: "9090"
             - name: "SPRING_DATASOURCE_URL"
               value: "jdbc:mysql://{{ if .Values.mysql.enabled }}{{ .Release.Name }}-mysql{{ else }}{{ .Values.env.springDatasourceHost }}{{ end }}:3306/{{ .Values.env.springDatasourceDb }}"
             - name: "SPRING_APPLICATION_JSON"
@@ -62,29 +60,16 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-            - name: management
-              containerPort: 9090
-              protocol: TCP
           livenessProbe:
             httpGet:
-              {{- if .Values.useActuatorCheck }}
-              path: /actuator/health
-              port: management
-              {{- else }}
               path: /VAADIN/themes/hawkbit/favicon.ico
               port: http
-              {{- end }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           readinessProbe:
             httpGet:
-              {{- if .Values.useActuatorCheck }}
-              path: /actuator/health
-              port: management
-              {{- else }}
               path: /VAADIN/themes/hawkbit/favicon.ico
               port: http
-              {{- end }}  
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           volumeMounts:
